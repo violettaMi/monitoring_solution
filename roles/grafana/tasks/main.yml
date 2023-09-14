@@ -1,0 +1,35 @@
+- name: Add Grafana APT repository
+  apt_repository:
+    repo: deb https://packages.grafana.com/oss/deb stable main
+    state: present
+    update_cache: yes
+    filename: grafana
+
+- name: Add Grafana GPG key
+  command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 963FA27710458545
+  ignore_errors: yes  # Ignore errors if the key is already added
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present
+    update_cache: yes
+
+- name: Start and enable Grafana service
+  systemd:
+    name: grafana-server
+    enabled: yes
+    state: started
+
+# - name: "Check if Grafana is accessible."
+#   uri:
+#     url: http://0.0.0.0:3001
+#     method: GET
+#     status_code: 200
+
+- name: Verify Grafana accessibility
+  uri:
+    url: http://54.210.126.58:3001
+    method: GET
+    return_content: yes
+  register: grafana_response
