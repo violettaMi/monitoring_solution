@@ -7,7 +7,7 @@
 
 - name: Add Grafana GPG key
   command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 963FA27710458545
-  ignore_errors: yes  # Ignore errors if the key is already added
+  ignore_errors: yes
 
 - name: Install Grafana
   apt:
@@ -20,12 +20,6 @@
     name: grafana-server
     enabled: yes
     state: started
-
-# - name: "Check if Grafana is accessible."
-#   uri:
-#     url: http://0.0.0.0:3001
-#     method: GET
-#     status_code: 200
 
 - name: Verify Grafana accessibility
   uri:
